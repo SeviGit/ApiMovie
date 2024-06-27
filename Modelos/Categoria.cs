@@ -8,6 +8,7 @@ public class Categoria {
 
     [Required]
     public string Nombre { get; set; }
-
+    [Required]
+    //[Display(Name ="Fecha de cración")]  Ejemplo para  la hora de mostrar
     public DateTime FechaCreacion{ get; set; }
 }

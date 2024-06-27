@@ -10,5 +10,7 @@ public class MiDbContext: DbContext{
     //Agregar los modelos aquí
 
     public DbSet<Categoria> Categorias { get; set; }
+    public DbSet<Pelicula> Peliculas { get; set; }
+    public DbSet<Usuario> Usuarios { get; set; }
 
 }

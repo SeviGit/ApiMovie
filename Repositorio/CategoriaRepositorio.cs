@@ -1,7 +1,6 @@
 ﻿using ApiPeliculas.Data;
 using ApiPeliculas.Modelos;
 using ApiPeliculas.Repositorio.IRepositorio;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ApiPeliculas.Repositorio;
 
@@ -9,19 +8,26 @@ public class CategoriaRepositorio : ICategoriaRepositorio {
 
     private readonly MiDbContext _bd;
 
-    public CategoriaRepositorio(MiDbContext bd)
-    {
+    public CategoriaRepositorio(MiDbContext bd) {
         _bd = bd;
     }
 
     public bool ActualizarCategoria(Categoria categoria) {
         categoria.FechaCreacion = DateTime.Now;
-        _bd.Categorias.Update(categoria);
+
+        //Arreglar problema del PUT
+        var categoriaExistente = _bd.Categorias.Find(categoria.Id);//Find busca en nuestro modelo
+        if (categoriaExistente != null) {
+            _bd.Entry(categoriaExistente).CurrentValues.SetValues(categoria); //CurrentValues son los valores, SetValues los inserta
+        } else {
+            _bd.Categorias.Update(categoria);
+        }
+
         return Guardar();
     }
     public bool BorrarCategoria(Categoria categoria) {
         _bd.Categorias.Remove(categoria);
-            return Guardar();
+        return Guardar();
     }
 
     public bool CrearCategoria(Categoria categoria) {
@@ -40,7 +46,7 @@ public class CategoriaRepositorio : ICategoriaRepositorio {
         return existe;
     }
 
-    public Categoria GetCategoria(int categoriaid) {      
+    public Categoria GetCategoria(int categoriaid) {
         return _bd.Categorias.FirstOrDefault(c => c.Id == categoriaid);
     }
 
@@ -50,6 +56,6 @@ public class CategoriaRepositorio : ICategoriaRepositorio {
 
     public bool Guardar() {
         return _bd.SaveChanges() >= 0 ? true : false;
-        
+
     }
 }
