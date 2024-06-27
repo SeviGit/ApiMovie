@@ -13,7 +13,7 @@ builder.Services.AddDbContext<MiDbContext>(opciones=> {
     opciones.UseSqlServer(builder.Configuration.GetConnectionString("ConnexionSql"));
 }
 );
-
+//prueba git
 //Agregamos los repositorios
 builder.Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
 builder.Services.AddScoped<IPeliculaRepositorio, PeliculaRepositorio>();
